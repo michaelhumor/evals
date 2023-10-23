@@ -11,10 +11,10 @@ from .base import _ModelRunner
 class LlamaRunner(_ModelRunner):
     def completion(self, prompt: OpenAICreatePrompt, **kwargs):
         # NOTE: run evals against LLAMA API server, you can get the LLAMA API server from https://github.com/open-evals/pyllama
-        r = requests.post(f"{os.environ['LLAMA_SERVER']}/prompt", json={"prompts": [prompt]})
-
+        r = requests.post(f"{os.environ['LLAMA_SERVER']}/completion", json={"prompt": prompt})
         result = r.json()
-        return {"choices": [{"text": "\n".join(result["results"])}]}
+        #print('Result:', result)
+        return {"choices": [{"text": "\n".join(result['content'])}]}
 
     @classmethod
     def resolve(cls, name: str) -> ModelSpec:
